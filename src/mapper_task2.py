@@ -11,10 +11,10 @@ def main() -> None:
         if row[0].strip() == "ID":
             continue
 
-        if len(row) <= 7:
+        if len(row) <= 5:
             continue
 
-        key = row[7].strip()
+        key = row[5].strip()
         if not key:
             continue
 
