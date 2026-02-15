@@ -2,13 +2,20 @@ import csv
 import sys
 
 
-def normalize_arrest(value: str) -> str | None:
-    normalized = value.strip().lower()
-    if normalized in {"true", "t", "yes", "y", "1"}:
-        return "true"
-    if normalized in {"false", "f", "no", "n", "0"}:
-        return "false"
-    return None
+def extract_year(date_value: str) -> str | None:
+    parts = date_value.strip().split()
+    if not parts:
+        return None
+
+    mmddyyyy = parts[0].split("/")
+    if len(mmddyyyy) != 3:
+        return None
+
+    year = mmddyyyy[2].strip()
+    if len(year) != 4 or not year.isdigit():
+        return None
+
+    return year
 
 
 def main() -> None:
@@ -20,14 +27,14 @@ def main() -> None:
         if row[0].strip() == "ID":
             continue
 
-        if len(row) <= 8:
+        if len(row) <= 2:
             continue
 
-        bucket = normalize_arrest(row[8])
-        if not bucket:
+        year = extract_year(row[2])
+        if not year:
             continue
 
-        print(f"{bucket}\t1")
+        print(f"{year}\t1")
 
 
 if __name__ == "__main__":
